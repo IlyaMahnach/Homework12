@@ -5,25 +5,21 @@ import ru.netology.domain.Product;
 
 public class ProductRepository {
     private Product[] items = new Product[0];
-    private ProductRepository repository;
 
     public void save(Product item) {
-        int length = items.length + 1;
-        Product[] tmp = new Product[length];
+        Product[] tmp = new Product[items.length + 1];
         System.arraycopy(items, 0, tmp, 0, items.length);
-        int lastIndex = tmp.length - 1;
-        tmp[lastIndex] = item;
+        tmp[tmp.length - 1] = item;
         items = tmp;
 
     }
 
-    public Product[] findAll() {
+    public Product[] getAll() {
         return items;
     }
 
-    public Product[] removeById(int id) {
-        int lenght = items.length - 1;
-        Product[] tmp = new Product[lenght];
+    public void removeById(int id) {
+        Product[] tmp = new Product[items.length - 1];
         int index = 0;
         for (Product item : items) {
             if (item.getId() != id) {
@@ -32,7 +28,7 @@ public class ProductRepository {
             }
         }
         items = tmp;
-        return null;
+
     }
 
 

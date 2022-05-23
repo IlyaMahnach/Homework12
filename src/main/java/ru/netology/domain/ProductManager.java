@@ -3,26 +3,33 @@ package ru.netology.domain;
 import ru.netology.repository.ProductRepository;
 
 public class ProductManager {
-    private ProductRepository repository = new ProductRepository();
-    private Product[] items = new Product[0];
+    public ProductRepository repository;
 
-    public ProductManager() {
-    }
 
     public ProductManager(ProductRepository repository) {
         this.repository = repository;
     }
 
-    public Product[] getAll() {
-        return repository.findAll();
-    }
 
     public void add(Product item) {
-        Product[] tmp = new Product[items.length + 1];
-        System.arraycopy(items, 0, tmp, 0, items.length);
-        tmp[tmp.length - 1] = item;
-        this.items = tmp;
+        repository.save(item);
+    }
+
+    public Product[] searchBy(String text) {
+        Product[] result = new Product[0];
+        for (Product product : repository.getAll()) {
+            if (matches(product, text)) {
+                Product[] tmp = new Product[result.length + 1];
+                System.arraycopy(result, 0, tmp, 0, result.length);
+                tmp[tmp.length - 1] = product;
+                result = tmp;
+            }
+        }
+        return result;
     }
 
 
+    public boolean matches(Product product, String search) {
+        return product.getName().contains(search);
+    }
 }
